@@ -37,6 +37,35 @@ app.post("/api/insert", (req, res) => {
   });
 });
 
+//Delete task
+app.delete("/api/delete/:taskName", (req, res) => {
+  const task = req.params.taskName;
+  const sqlDelete = "DELETE FROM todos WHERE taskName = ?";
+
+  db.query(sqlDelete, task, (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+});
+
+//Update description
+app.put("/api/update", (req, res) => {
+  const task = req.body.taskName;
+  const description = req.body.description;
+  const sqlUpdate = "UPDATE todos SET description = ? WHERE taskName = ?";
+
+  db.query(sqlUpdate, [description, task], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+});
+
+app.listen(3001, () => {
+  console.log("Listening on port 3001");
+});
+
 /*
 app.get("/", (req, res) => {
   const sqlInsert =
@@ -47,7 +76,3 @@ app.get("/", (req, res) => {
   });
 });
 */
-
-app.listen(3001, () => {
-  console.log("Listening on port 3001");
-});
