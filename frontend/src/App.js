@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import axios from "axios";
 
 function App() {
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
+
+  const [todoList, setTodoList] = useState([]);
+
+  //Displaying the tasks at the initial render of the app
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/get").then((response) => {
+      // console.log(response.data);
+      setTodoList(response.data);
+    });
+  }, []);
 
   const submitTodo = () => {
     axios
@@ -39,6 +49,18 @@ function App() {
         ></input>
 
         <button onClick={submitTodo}>Submit</button>
+
+        {/* Mapping the tasks  */}
+        <div>
+          <h1>Todo List : </h1>
+          {todoList.map((el) => {
+            return (
+              <h2>
+                Task: {el.taskName} || Description: {el.description}{" "}
+              </h2>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

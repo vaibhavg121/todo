@@ -17,6 +17,16 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Getting the list of tasks from local database:
+app.get("/api/get", (req, res) => {
+  const sqlSelect = "SELECT * from todos";
+  db.query(sqlSelect, (err, result) => {
+    //Sending the array of tasks to be displayed
+    res.send(result);
+  });
+});
+
+//Inserting the typed task into the database:
 app.post("/api/insert", (req, res) => {
   const taskName = req.body.taskName;
   const description = req.body.description;
